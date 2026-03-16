@@ -22,6 +22,8 @@
   --color-cyan-400: #22d3ee;
   --color-emerald-400: #34d399;
   --color-amber-400: #fbbf24;
+  --color-orange-500: #f97316;
+  --color-orange-400: #fb923c;
   --color-rose-400: #fb7185;
   --color-violet-500: #8b5cf6;
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -95,6 +97,10 @@ body {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 0 40px rgba(139, 92, 246, 0.05);
 }
 
+.glow-orange {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.15), 0 0 40px rgba(249, 115, 22, 0.05);
+}
+
 .border-glass {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -103,6 +109,13 @@ body {
 
 .text-gradient {
   background: linear-gradient(135deg, var(--color-blue-400), var(--color-cyan-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-orange {
+  background: linear-gradient(135deg, var(--color-orange-400), var(--color-amber-400));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

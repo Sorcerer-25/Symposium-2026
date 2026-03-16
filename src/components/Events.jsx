@@ -96,11 +96,11 @@ function Events() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12 text-center sm:text-left"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-widest mb-4">
             <Layers size={14} /> Schedule
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight">
-            Symposium <span className="text-gradient">Events</span>
+            Symposium <span className="text-gradient-orange">Events</span>
           </h1>
           <p className="text-slate-400 max-w-2xl text-lg">
             Push your boundaries and showcase your talent across our diverse lineup of flagship competitions.
@@ -121,7 +121,7 @@ function Events() {
               onClick={() => setActiveFilter(tab)}
               className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 cursor-pointer ${
                 activeFilter === tab
-                  ? 'bg-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]'
+                  ? 'bg-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.5)]'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
@@ -146,23 +146,23 @@ function Events() {
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
               className={`relative group rounded-3xl p-8 flex flex-col h-full glass border-glass transition-all duration-300 ${
                 event.type === 'Technical' 
-                  ? 'hover:glow-cyan hover:border-cyan-500/50' 
-                  : 'hover:glow-violet hover:border-violet-500/50'
+                  ? 'hover:glow-orange hover:border-orange-600/50' 
+                  : 'hover:glow-orange hover:border-orange-400/50'
               }`}
             >
               {/* Decorative Background Glow */}
               <div className={`absolute -top-10 -right-10 w-32 h-32 blur-[80px] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${
-                event.type === 'Technical' ? 'bg-cyan-400' : 'bg-violet-400'
+                event.type === 'Technical' ? 'bg-orange-600' : 'bg-orange-400'
               }`} />
 
               {/* Type Badge */}
               <div className="flex items-center justify-between mb-6">
                 {event.type === 'Technical' ? (
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-orange-600/10 text-orange-400 border border-orange-600/20">
                     <Code2 size={12} /> Tech
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-violet-400/10 text-violet-400 border border-violet-400/20">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-orange-400/10 text-amber-500 border border-orange-400/20">
                     <Gamepad2 size={12} /> Fun
                   </span>
                 )}
@@ -170,7 +170,7 @@ function Events() {
               </div>
 
               {/* Event Name */}
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">
                 {event.name}
               </h3>
 
@@ -184,8 +184,8 @@ function Events() {
                 id={`view-event-${event.id}`}
                 className={`mt-auto inline-flex items-center justify-center gap-2 w-full px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 cursor-pointer ${
                   event.type === 'Technical'
-                    ? 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-cyan-500 hover:text-white hover:border-cyan-400 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]'
-                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-violet-500 hover:text-white hover:border-violet-400 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+                    ? 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-orange-600 hover:text-white hover:border-orange-500 group-hover:shadow-[0_0_20px_rgba(234,88,12,0.3)]'
+                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-orange-500 hover:text-white hover:border-orange-400 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]'
                 }`}
               >
                 Explore Event
