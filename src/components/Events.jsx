@@ -88,19 +88,23 @@ function Events() {
       : eventsData.filter((e) => e.type === activeFilter)
 
   return (
-    <div className="min-h-screen py-12 px-6">
+    <div className="min-h-screen py-16 px-6 bg-slate-950/50">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
+          className="mb-12 text-center sm:text-left"
         >
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-2 flex items-center gap-3">
-            <Layers size={32} className="text-blue-400" />
-            Events
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-4">
+            <Layers size={14} /> Schedule
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+            Symposium <span className="text-gradient">Events</span>
           </h1>
-          <p className="text-slate-400">Explore our curated lineup of events and find your stage.</p>
+          <p className="text-slate-400 max-w-2xl text-lg">
+            Push your boundaries and showcase your talent across our diverse lineup of flagship competitions.
+          </p>
         </motion.div>
 
         {/* Filter Tabs */}
@@ -108,18 +112,17 @@ function Events() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center gap-2 mb-8"
+          className="flex flex-wrap items-center gap-3 mb-12 glass p-2 rounded-2xl border-glass w-fit"
         >
-          <Filter size={16} className="text-slate-500" />
           {filterTabs.map((tab) => (
             <button
               key={tab}
               id={`filter-${tab.toLowerCase().replace('-', '')}`}
               onClick={() => setActiveFilter(tab)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+              className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 cursor-pointer ${
                 activeFilter === tab
-                  ? 'bg-blue-500/15 text-blue-400 border border-blue-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent'
+                  ? 'bg-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               {tab}
@@ -130,44 +133,63 @@ function Events() {
         {/* Cards Grid */}
         <motion.div
           layout
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {filteredEvents.map((event, i) => (
             <motion.div
               layout
               key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="rounded-2xl gradient-card border border-slate-800/60 p-6 flex flex-col group"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              className={`relative group rounded-3xl p-8 flex flex-col h-full glass border-glass transition-all duration-300 ${
+                event.type === 'Technical' 
+                  ? 'hover:glow-cyan hover:border-cyan-500/50' 
+                  : 'hover:glow-violet hover:border-violet-500/50'
+              }`}
             >
+              {/* Decorative Background Glow */}
+              <div className={`absolute -top-10 -right-10 w-32 h-32 blur-[80px] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${
+                event.type === 'Technical' ? 'bg-cyan-400' : 'bg-violet-400'
+              }`} />
+
               {/* Type Badge */}
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center justify-between mb-6">
                 {event.type === 'Technical' ? (
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
-                    <Code2 size={12} /> Technical
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+                    <Code2 size={12} /> Tech
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20">
-                    <Gamepad2 size={12} /> Non-Technical
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-violet-400/10 text-violet-400 border border-violet-400/20">
+                    <Gamepad2 size={12} /> Fun
                   </span>
                 )}
+                <span className="text-slate-600 font-mono text-xs">#0{event.id}</span>
               </div>
 
               {/* Event Name */}
-              <h3 className="text-lg font-bold text-slate-100 mb-2">{event.name}</h3>
+              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                {event.name}
+              </h3>
 
               {/* Description */}
-              <p className="text-sm text-slate-400 flex-1 leading-relaxed mb-5">{event.description}</p>
+              <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-1">
+                {event.description}
+              </p>
 
-              {/* View Details Button */}
+              {/* Action Button */}
               <button
                 id={`view-event-${event.id}`}
-                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold border border-slate-700/60 text-slate-300 hover:text-blue-400 hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-200 cursor-pointer"
+                className={`mt-auto inline-flex items-center justify-center gap-2 w-full px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 cursor-pointer ${
+                  event.type === 'Technical'
+                    ? 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-cyan-500 hover:text-white hover:border-cyan-400 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]'
+                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-violet-500 hover:text-white hover:border-violet-400 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+                }`}
               >
-                <Eye size={16} />
-                View Details
+                Explore Event
+                <Eye size={18} className="transition-transform group-hover:scale-110" />
               </button>
             </motion.div>
           ))}
