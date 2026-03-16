@@ -56,7 +56,7 @@ function App() {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="min-h-screen"
           >
-            <ActiveComponent />
+            <ActiveComponent onNavigate={handleNavClick} />
           </motion.div>
         </AnimatePresence>
       </main>
