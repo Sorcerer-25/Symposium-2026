@@ -58,6 +58,12 @@ function Registration() {
         : [...prev.selectedEvents, id],
     }))
 
+  const isStep0Valid = formData.fullName && formData.email && formData.college && formData.department && formData.phone;
+  const isStep1Valid = formData.selectedEvents.length > 0;
+  const currentStepValid = step === 0 ? isStep0Valid : step === 1 ? isStep1Valid : true;
+
+  const isAllValid = isStep0Valid && isStep1Valid;
+
   return (
     <div className="min-h-screen py-12 px-6">
       <div className="max-w-2xl mx-auto">
@@ -239,7 +245,12 @@ function Registration() {
 
                 <button
                   id="proceed-to-pay-btn"
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                  disabled={!isAllValid}
+                  className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 ${
+                    isAllValid
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] cursor-pointer'
+                      : 'bg-slate-800 text-slate-500 border border-slate-700/50 cursor-not-allowed opacity-60'
+                  }`}
                 >
                   <CreditCard size={18} />
                   Proceed to Pay — ₹250
@@ -266,8 +277,16 @@ function Registration() {
             {step < 2 && (
               <button
                 id="reg-next-btn"
-                onClick={() => setStep((s) => Math.min(2, s + 1))}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-blue-500/15 text-blue-400 text-sm font-semibold hover:bg-blue-500/25 transition-all cursor-pointer"
+                onClick={() => {
+                  if (currentStepValid) {
+                    setStep((s) => Math.min(2, s + 1))
+                  }
+                }}
+                className={`inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                  currentStepValid
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 hover:bg-blue-500 hover:shadow-blue-500/40'
+                    : 'bg-slate-800 text-slate-500 border border-slate-700/50'
+                }`}
               >
                 Next <ChevronRight size={16} />
               </button>
