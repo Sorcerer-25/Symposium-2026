@@ -73,12 +73,12 @@ function Events({ onNavigate, events }) {
               className={`relative group rounded-3xl p-8 flex flex-col h-full glass border-glass transition-all duration-300 ${
                 event.type === 'Technical' 
                   ? 'hover:glow-orange hover:border-orange-600/50' 
-                  : 'hover:glow-orange hover:border-orange-400/50'
+                  : 'hover:glow-green hover:border-emerald-500/50'
               }`}
             >
               {/* Decorative Background Glow */}
               <div className={`absolute -top-10 -right-10 w-32 h-32 blur-[80px] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${
-                event.type === 'Technical' ? 'bg-orange-600' : 'bg-orange-400'
+                event.type === 'Technical' ? 'bg-orange-600' : 'bg-emerald-500'
               }`} />
 
               {/* Type Badge */}
@@ -88,7 +88,7 @@ function Events({ onNavigate, events }) {
                     <Code2 size={12} /> Tech
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-orange-400/10 text-amber-500 border border-orange-400/20">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <Gamepad2 size={12} /> Fun
                   </span>
                 )}
@@ -96,7 +96,9 @@ function Events({ onNavigate, events }) {
               </div>
 
               {/* Event Name */}
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">
+              <h3 className={`text-2xl font-bold text-white mb-3 transition-colors ${
+                event.type === 'Technical' ? 'group-hover:text-orange-400' : 'group-hover:text-emerald-400'
+              }`}>
                 {event.name}
               </h3>
 
@@ -112,7 +114,7 @@ function Events({ onNavigate, events }) {
                 className={`mt-auto inline-flex items-center justify-center gap-2 w-full px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 cursor-pointer ${
                   event.type === 'Technical'
                     ? 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-orange-600 hover:text-white hover:border-orange-500 group-hover:shadow-[0_0_20px_rgba(234,88,12,0.3)]'
-                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-orange-500 hover:text-white hover:border-orange-400 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]'
+                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-emerald-600 hover:text-white hover:border-emerald-500 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]'
                 }`}
               >
                 Explore Event
@@ -145,7 +147,7 @@ function Events({ onNavigate, events }) {
             >
               {/* Background Glow */}
               <div className={`absolute top-0 right-0 w-64 h-64 blur-[100px] rounded-full opacity-20 pointer-events-none ${
-                selectedEvent.type === 'Technical' ? 'bg-orange-600' : 'bg-orange-400'
+                selectedEvent.type === 'Technical' ? 'bg-orange-600' : 'bg-emerald-500'
               }`} />
 
               {/* Close Button */}
@@ -163,7 +165,7 @@ function Events({ onNavigate, events }) {
                     <Code2 size={14} /> Technical
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full bg-orange-400/10 text-amber-500 border border-orange-400/20">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <Gamepad2 size={14} /> Non-Technical
                   </span>
                 )}
@@ -185,7 +187,9 @@ function Events({ onNavigate, events }) {
               {/* Event Details Grid */}
               <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
                 <div className="bg-slate-950/50 border border-slate-800/50 rounded-2xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    selectedEvent.type === 'Technical' ? 'bg-orange-500/10 text-orange-500' : 'bg-emerald-500/10 text-emerald-500'
+                  }`}>
                     <Calendar size={20} />
                   </div>
                   <div>
@@ -195,7 +199,9 @@ function Events({ onNavigate, events }) {
                 </div>
                 
                 <div className="bg-slate-950/50 border border-slate-800/50 rounded-2xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    selectedEvent.type === 'Technical' ? 'bg-orange-500/10 text-orange-500' : 'bg-emerald-500/10 text-emerald-500'
+                  }`}>
                     <Clock size={20} />
                   </div>
                   <div>
@@ -205,7 +211,9 @@ function Events({ onNavigate, events }) {
                 </div>
 
                 <div className="bg-slate-950/50 border border-slate-800/50 rounded-2xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    selectedEvent.type === 'Technical' ? 'bg-orange-500/10 text-orange-500' : 'bg-emerald-500/10 text-emerald-500'
+                  }`}>
                     <MapPin size={20} />
                   </div>
                   <div>
@@ -215,7 +223,9 @@ function Events({ onNavigate, events }) {
                 </div>
 
                 <div className="bg-slate-950/50 border border-slate-800/50 rounded-2xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    selectedEvent.type === 'Technical' ? 'bg-orange-500/10 text-orange-500' : 'bg-emerald-500/10 text-emerald-500'
+                  }`}>
                     <Users size={20} />
                   </div>
                   <div>
@@ -228,7 +238,11 @@ function Events({ onNavigate, events }) {
               {/* Footer Actions */}
               <div className="flex flex-col sm:flex-row items-center gap-4 relative z-10 pt-6 border-t border-slate-800">
                 <button
-                  className="w-full sm:w-auto flex-1 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-bold transition-all hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:-translate-y-1 cursor-pointer"
+                  className={`w-full sm:w-auto flex-1 text-white px-8 py-4 rounded-xl font-bold transition-all hover:-translate-y-1 cursor-pointer ${
+                    selectedEvent.type === 'Technical'
+                      ? 'bg-orange-500 hover:bg-orange-600 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]'
+                      : 'bg-emerald-500 hover:bg-emerald-600 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]'
+                  }`}
                   onClick={() => {
                     onNavigate?.('registration');
                     setSelectedEvent(null);
