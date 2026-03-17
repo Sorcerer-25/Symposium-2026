@@ -34,7 +34,7 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 }
 
-function Home() {
+function Home({ onNavigate }) {
   return (
     <div className="min-h-screen">
       {/* ===== Hero Section ===== */}
@@ -84,6 +84,7 @@ function Home() {
           <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }}>
             <button
               id="hero-register-btn"
+              onClick={() => onNavigate?.('registration')}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 cursor-pointer"
             >
               Register Now <ChevronRight size={18} />
