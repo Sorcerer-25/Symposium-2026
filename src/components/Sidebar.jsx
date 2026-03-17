@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, UserPlus, Trophy, Phone, X, Sparkles } from 'lucide-react'
+import { Home, UserPlus, Trophy, Phone, X, Sparkles, Shield } from 'lucide-react'
 
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'registration', label: 'Registration', icon: UserPlus },
   { id: 'events', label: 'Events', icon: Trophy },
   { id: 'contact', label: 'Contact', icon: Phone },
+  { id: 'admin', label: 'Admin', icon: Shield },
 ]
 
 function Sidebar({ activeSection, onNavigate, isOpen, onClose }) {

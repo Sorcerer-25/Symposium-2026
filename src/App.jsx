@@ -6,17 +6,21 @@ import Home from './components/Home'
 import Registration from './components/Registration'
 import Events from './components/Events'
 import Contact from './components/Contact'
+import Admin from './components/Admin'
+import { initialEventsData } from './data/events'
 
 const sections = {
   home: Home,
   registration: Registration,
   events: Events,
   contact: Contact,
+  admin: Admin,
 }
 
 function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [eventsData, setEventsData] = useState(initialEventsData)
 
   const ActiveComponent = sections[activeSection]
 
@@ -56,7 +60,7 @@ function App() {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="min-h-screen"
           >
-            <ActiveComponent onNavigate={handleNavClick} />
+            <ActiveComponent onNavigate={handleNavClick} events={eventsData} setEvents={setEventsData} />
           </motion.div>
         </AnimatePresence>
       </main>

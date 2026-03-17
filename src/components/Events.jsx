@@ -2,91 +2,16 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, Code2, Gamepad2, Layers, Filter, X, Calendar, MapPin, Users, Clock } from 'lucide-react'
 
-const eventsData = [
-  {
-    id: 1,
-    name: 'Code Sprint',
-    type: 'Technical',
-    description: 'Race against the clock to solve algorithmic challenges. Test your speed, accuracy, and problem-solving skills in this intense coding showdown.',
-  },
-  {
-    id: 2,
-    name: 'Hackathon 48hr',
-    type: 'Technical',
-    description: 'Build a working prototype in 48 hours. Teams of up to 4 compete to create innovative solutions to real-world problems.',
-  },
-  {
-    id: 3,
-    name: 'Paper Presentation',
-    type: 'Technical',
-    description: 'Present your research on emerging technologies. Best papers will be featured in the symposium journal.',
-  },
-  {
-    id: 4,
-    name: 'Technical Quiz',
-    type: 'Technical',
-    description: 'A rapid-fire quiz covering CS fundamentals, latest tech trends, and brain-teasing logical puzzles.',
-  },
-  {
-    id: 5,
-    name: 'Web Dev Challenge',
-    type: 'Technical',
-    description: 'Design and develop a stunning website from scratch within the given time limit. Creativity meets code!',
-  },
-  {
-    id: 6,
-    name: 'AI/ML Showcase',
-    type: 'Technical',
-    description: 'Demonstrate your AI or Machine Learning project. Judged on innovation, accuracy, and real-world applicability.',
-  },
-  {
-    id: 7,
-    name: 'Photography Contest',
-    type: 'Non-Technical',
-    description: 'Capture the essence of the symposium through your lens. On-spot theme reveal with creative freedom.',
-  },
-  {
-    id: 8,
-    name: 'Gaming Arena',
-    type: 'Non-Technical',
-    description: 'Compete in multiplayer gaming tournaments across popular titles. Bring your A-game and claim the throne.',
-  },
-  {
-    id: 9,
-    name: 'Treasure Hunt',
-    type: 'Non-Technical',
-    description: 'Solve cryptic clues and navigate the campus to find hidden treasures. Teamwork and wit are your best tools.',
-  },
-  {
-    id: 10,
-    name: 'Meme War',
-    type: 'Non-Technical',
-    description: 'Create the funniest and most relatable memes on given topics. Audience votes decide the winner!',
-  },
-  {
-    id: 11,
-    name: 'Short Film Festival',
-    type: 'Non-Technical',
-    description: 'Submit your short film (max 10 min) on any theme. Best films will be screened and awarded at the closing ceremony.',
-  },
-  {
-    id: 12,
-    name: 'Stand-up Comedy',
-    type: 'Non-Technical',
-    description: 'Got jokes? Take the stage and make the audience laugh. Clean humor only — the funnier, the better!',
-  },
-]
-
 const filterTabs = ['All', 'Technical', 'Non-Technical']
 
-function Events({ onNavigate }) {
+function Events({ onNavigate, events }) {
   const [activeFilter, setActiveFilter] = useState('All')
   const [selectedEvent, setSelectedEvent] = useState(null)
 
   const filteredEvents =
     activeFilter === 'All'
-      ? eventsData
-      : eventsData.filter((e) => e.type === activeFilter)
+      ? events || []
+      : (events || []).filter((e) => e.type === activeFilter)
 
   return (
     <div className="min-h-screen py-16 px-6 bg-slate-950/50">
@@ -265,7 +190,7 @@ function Events({ onNavigate }) {
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 font-semibold mb-0.5 uppercase tracking-wider">Date</p>
-                    <p className="text-sm text-slate-200 font-bold">Oct 15, 2026</p>
+                    <p className="text-sm text-slate-200 font-bold">{selectedEvent.date || 'Oct 15, 2026'}</p>
                   </div>
                 </div>
                 
@@ -275,7 +200,7 @@ function Events({ onNavigate }) {
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 font-semibold mb-0.5 uppercase tracking-wider">Time</p>
-                    <p className="text-sm text-slate-200 font-bold">10:00 AM</p>
+                    <p className="text-sm text-slate-200 font-bold">{selectedEvent.time || '10:00 AM'}</p>
                   </div>
                 </div>
 
@@ -285,7 +210,7 @@ function Events({ onNavigate }) {
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 font-semibold mb-0.5 uppercase tracking-wider">Venue</p>
-                    <p className="text-sm text-slate-200 font-bold">Main Auditorium</p>
+                    <p className="text-sm text-slate-200 font-bold">{selectedEvent.venue || 'Main Auditorium'}</p>
                   </div>
                 </div>
 
@@ -295,7 +220,7 @@ function Events({ onNavigate }) {
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 font-semibold mb-0.5 uppercase tracking-wider">Team Size</p>
-                    <p className="text-sm text-slate-200 font-bold">1-4 Members</p>
+                    <p className="text-sm text-slate-200 font-bold">{selectedEvent.teamSize || '1-4 Members'}</p>
                   </div>
                 </div>
               </div>
