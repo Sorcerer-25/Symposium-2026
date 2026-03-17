@@ -22,12 +22,19 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [eventsData, setEventsData] = useState(initialEventsData)
 
-  const ActiveComponent = sections[activeSection]
-
   const handleNavClick = (section) => {
     setActiveSection(section)
     setSidebarOpen(false)
   }
+
+  const sections = {
+    home: () => <Home onNavigate={handleNavClick} />,
+    registration: Registration,
+    events: Events,
+    contact: Contact,
+  }
+
+  const ActiveComponent = sections[activeSection]
 
   return (
     <div className="flex min-h-screen bg-slate-950">

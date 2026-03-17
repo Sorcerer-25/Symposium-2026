@@ -11,7 +11,14 @@ import {
   CreditCard,
   Check,
   Sparkles,
+  Loader2,
+  PartyPopper,
+  Zap,
+  QrCode,
+  Copy,
+  Info,
 } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 
 const dummyEvents = [
   { id: 1, name: 'Code Sprint', type: 'Technical' },
@@ -45,7 +52,11 @@ function Registration() {
     department: '',
     phone: '',
     selectedEvents: [],
+    transactionId: '',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState('')
 
   const updateField = (field, value) =>
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -57,6 +68,112 @@ function Registration() {
         ? prev.selectedEvents.filter((e) => e !== id)
         : [...prev.selectedEvents, id],
     }))
+
+  const isStep0Valid = formData.fullName && formData.email && formData.college && formData.department && formData.phone;
+  const isStep1Valid = formData.selectedEvents.length > 0;
+  const isStep2Valid = formData.transactionId.length >= 6; // Basic validation for transaction ID
+  const currentStepValid = step === 0 ? isStep0Valid : step === 1 ? isStep1Valid : isStep2Valid;
+
+  const isAllValid = isStep0Valid && isStep1Valid && isStep2Valid;
+
+  const handleSubmit = async () => {
+    if (!isAllValid) return;
+
+    setIsSubmitting(true)
+    setError('')
+
+    // Check if Supabase is actually configured
+    const sbUrl = import.meta.env.VITE_SUPABASE_URL;
+    const isMock = !sbUrl || sbUrl.includes('placeholder');
+    
+    if (isMock) {
+      setError('Supabase is not configured. Please add your credentials to the .env file.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const { data, error: sbError } = await supabase
+        .from('students')
+        .insert([
+          {
+            full_name: formData.fullName,
+            email: formData.email,
+            college: formData.college,
+            department: formData.department,
+            phone: formData.phone,
+            selected_events: formData.selectedEvents.map(id => {
+              const ev = dummyEvents.find(e => e.id === id)
+              return ev?.name
+            }),
+            transaction_id: formData.transactionId,
+            amount: 250,
+            status: 'verifying' 
+          }
+        ])
+
+      if (sbError) throw sbError
+
+      // Simulate a small delay for smoother transition
+      setTimeout(() => {
+        setIsSuccess(true)
+        setIsSubmitting(false)
+      }, 1500)
+    } catch (err) {
+      console.error('Registration error:', err)
+      setError(err.message || 'Something went wrong. Please try again.')
+      setIsSubmitting(false)
+    }
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full glass border border-emerald-500/30 p-8 rounded-3xl text-center relative overflow-hidden"
+        >
+          {/* Decorative background elements */}
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full" />
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full" />
+
+          <div className="relative z-10">
+            <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/10 animate-bounce">
+              <PartyPopper size={36} />
+            </div>
+            <h2 className="text-3xl font-bold text-slate-100 mb-3">CONGRATULATIONS!</h2>
+            <div className="h-1 w-12 bg-emerald-500 mx-auto mb-6 rounded-full" />
+            <p className="text-slate-300 leading-relaxed mb-8">
+              Hi <span className="text-emerald-400 font-semibold">{formData.fullName}</span>, your registration for Symposium 2026 has been successfully received.
+            </p>
+
+            <div className="bg-slate-900/50 rounded-2xl p-4 border border-slate-800 mb-8 text-left space-y-2">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-400 font-medium">Registration ID</span>
+                <span className="text-slate-200 font-mono">#{Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-400 font-medium">Events Selected</span>
+                <span className="text-emerald-400 font-semibold">{formData.selectedEvents.length}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3.5 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-emerald-500/25"
+            >
+              <Zap size={18} fill="currentColor" />
+              Done
+            </button>
+            <p className="mt-4 text-xs text-slate-500 italic">
+              A confirmation email has been sent to {formData.email}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen py-12 px-6">
@@ -231,19 +348,87 @@ function Registration() {
                       }
                     </div>
                   </div>
-                  <div className="rounded-xl bg-gradient-to-r from-blue-500/10 to-indigo-900/20 p-4 border border-blue-500/20 flex items-center justify-between">
-                    <span className="text-sm text-slate-300">Total Amount</span>
-                    <span className="text-xl font-bold text-blue-400">₹250</span>
+                  <div className="rounded-xl bg-gradient-to-r from-blue-500/10 to-indigo-900/20 p-5 border border-blue-500/20 mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm text-slate-300">Total Amount</span>
+                      <span className="text-xl font-bold text-blue-400">₹250</span>
+                    </div>
+                    
+                    <div className="space-y-4 pt-4 border-t border-slate-700/50">
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <QrCode size={14} /> Payment Instructions
+                      </p>
+                      
+                      <div className="flex items-center justify-between bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                        <div className="flex flex-col">
+                          <span className="text-[10px] text-slate-500 uppercase">UPI ID</span>
+                          <span className="text-sm text-slate-200 font-mono">symposium2026@upi</span>
+                        </div>
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText('symposium2026@upi');
+                            // You could add a toast here
+                          }}
+                          className="p-2 hover:bg-slate-800 rounded-md text-slate-400 transition-colors"
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+
+                      <div className="p-3 bg-blue-500/5 rounded-lg border border-blue-500/10 flex gap-3">
+                        <Info size={16} className="text-blue-400 shrink-0 mt-0.5" />
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                          Please pay <span className="text-blue-300 font-semibold">₹250</span> using any UPI app (GPay, PhonePe, Paytm) and paste the <span className="text-blue-300 font-semibold">Transaction ID</span> below.
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                          UPI Transaction ID
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.transactionId}
+                          onChange={(e) => updateField('transactionId', e.target.value)}
+                          placeholder="e.g. 412345678901"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-700/60 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30 transition-colors text-sm font-mono"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
+                {error && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-400 text-sm mb-4 text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20"
+                  >
+                    {error}
+                  </motion.p>
+                )}
                 <button
-                  id="proceed-to-pay-btn"
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                  id="submit-registration-btn"
+                  disabled={!isAllValid || isSubmitting}
+                  onClick={handleSubmit}
+                  className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 relative ${
+                    isAllValid && !isSubmitting
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] cursor-pointer'
+                      : 'bg-slate-800 text-slate-500 border border-slate-700/50 cursor-not-allowed opacity-60'
+                  }`}
                 >
-                  <CreditCard size={18} />
-                  Proceed to Pay — ₹250
-                  <Sparkles size={14} />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="animate-spin" size={18} />
+                      Confirming Transaction...
+                    </>
+                  ) : (
+                    <>
+                      <Zap size={18} fill="currentColor" />
+                      Complete Registration
+                      <Sparkles size={14} />
+                    </>
+                  )}
                 </button>
               </motion.div>
             )}
@@ -266,8 +451,16 @@ function Registration() {
             {step < 2 && (
               <button
                 id="reg-next-btn"
-                onClick={() => setStep((s) => Math.min(2, s + 1))}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-blue-500/15 text-blue-400 text-sm font-semibold hover:bg-blue-500/25 transition-all cursor-pointer"
+                onClick={() => {
+                  if (currentStepValid) {
+                    setStep((s) => Math.min(2, s + 1))
+                  }
+                }}
+                className={`inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                  currentStepValid
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 hover:bg-blue-500 hover:shadow-blue-500/40'
+                    : 'bg-slate-800 text-slate-500 border border-slate-700/50'
+                }`}
               >
                 Next <ChevronRight size={16} />
               </button>
